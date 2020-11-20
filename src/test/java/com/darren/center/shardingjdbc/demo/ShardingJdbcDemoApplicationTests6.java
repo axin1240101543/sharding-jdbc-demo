@@ -17,7 +17,7 @@ class ShardingJdbcDemoApplicationTests6 {
 
     @Test
     public void insert(){
-        for (int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 20; i++) {
             DictOrderType dictOrderType = new DictOrderType();
             dictOrderType.setOrderType("dict"+ i);
             dictOrderTypeMapper.insert(dictOrderType);

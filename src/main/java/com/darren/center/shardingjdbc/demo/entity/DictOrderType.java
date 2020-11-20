@@ -9,14 +9,14 @@ package com.darren.center.shardingjdbc.demo.entity;
  **/
 public class DictOrderType {
 
-    private Integer id;
+    private Long id;
     private String orderType;
 
-    public Integer getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

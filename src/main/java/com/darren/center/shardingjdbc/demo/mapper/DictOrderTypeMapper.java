@@ -17,7 +17,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface DictOrderTypeMapper {
 
-    @Insert("insert into dict_order_type (id, order_type) values (#{id}, #{orderType})")
+    @Insert("insert into dict_order_type (order_type) values (#{orderType})")
     public void insert(DictOrderType dictOrderType);
 
     @Delete("delete from dict_order_type where id = #{id}")
