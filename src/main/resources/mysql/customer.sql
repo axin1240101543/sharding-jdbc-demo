@@ -1,0 +1,6 @@
+#客户表
+CREATE TABLE customer(
+id INT AUTO_INCREMENT,
+NAME VARCHAR(200),
+PRIMARY KEY(id)
+);
