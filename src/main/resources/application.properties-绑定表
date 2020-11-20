@@ -1,0 +1,36 @@
+#整合mybatis
+mybatis.type-aliases-package=com.darren.center.shardingjdbc.demo.mapper
+
+#配置数据源的名称
+spring.shardingsphere.datasource.names=ds1,ds2
+
+#配置数据源的具体内容
+spring.shardingsphere.datasource.ds1.type=com.alibaba.druid.pool.DruidDataSource
+spring.shardingsphere.datasource.ds1.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.shardingsphere.datasource.ds1.url=jdbc:mysql://localhost:3306/sharding_sphere_1?serverTimezone=UTC
+spring.shardingsphere.datasource.ds1.username=root
+spring.shardingsphere.datasource.ds1.password=1234
+
+#配置数据源的具体内容
+spring.shardingsphere.datasource.ds2.type=com.alibaba.druid.pool.DruidDataSource
+spring.shardingsphere.datasource.ds2.driver-class-name=com.mysql.cj.jdbc.Driver
+spring.shardingsphere.datasource.ds2.url=jdbc:mysql://localhost:3306/sharding_sphere_2?serverTimezone=UTC
+spring.shardingsphere.datasource.ds2.username=root
+spring.shardingsphere.datasource.ds2.password=1234
+
+spring.shardingsphere.sharding.tables.orders.actual-data-nodes=ds$->{1..2}.orders_$->{1..2}
+spring.shardingsphere.sharding.tables.orders.table-strategy.inline.sharding-column=id
+spring.shardingsphere.sharding.tables.orders.table-strategy.inline.algorithm-expression=orders_$->{id % 2 + 1}
+spring.shardingsphere.sharding.tables.orders.key-generator.column=id
+spring.shardingsphere.sharding.tables.orders.key-generator.type=SNOWFLAKE
+
+spring.shardingsphere.sharding.tables.orders_detail.actual-data-nodes=ds$->{1..2}.orders_detail_$->{1..2}
+spring.shardingsphere.sharding.tables.orders_detail.table-strategy.inline.sharding-column=id
+spring.shardingsphere.sharding.tables.orders_detail.table-strategy.inline.algorithm-expression=orders_detail_$->{id % 2 + 1}
+spring.shardingsphere.sharding.tables.orders_detail.key-generator.column=id
+spring.shardingsphere.sharding.tables.orders_detail.key-generator.type=SNOWFLAKE
+
+spring.shardingsphere.sharding.binding-tables=orders,orders_detail
+
+#打开sql输出日志
+spring.shardingsphere.props.sql.show=true
