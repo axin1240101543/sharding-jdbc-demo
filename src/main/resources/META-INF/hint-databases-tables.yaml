@@ -1,0 +1,57 @@
+dataSources:
+  ds_0: !!com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sharding_sphere_1?serverTimezone=UTC
+    username: root
+    password: 1234
+  ds_1: !!com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/sharding_sphere_2?serverTimezone=UTC
+    username: root
+    password: 1234
+
+#配置分片规则
+shardingRule:
+  tables:
+    #t_order表的配置
+    t_order:
+      #真实的数据节点
+      actualDataNodes: ds_${0..1}.t_order_${0..1}
+      #分库的策略
+      databaseStrategy:
+        hint:
+          algorithmClassName: com.darren.center.shardingjdbc.demo.hint.MyHintAlgorithm
+      #分表的策略
+      tableStrategy:
+        hint:
+          algorithmClassName: com.darren.center.shardingjdbc.demo.hint.MyHintAlgorithm
+      #主键生成规则
+      keyGenerator:
+        type: SNOWFLAKE
+        column: order_id
+        props:
+          worker.id: 123
+    #t_order_item表的配置
+    t_order_item:
+      #真实的数据节点
+      actualDataNodes: ds_${0..1}.t_order_item_${0..1}
+  #绑定表的配置
+  bindingTables:
+    - t_order,t_order_item
+  #全局表的配置
+  broadcastTables:
+    - t_address
+
+  #默认的分库规则
+  defaultDatabaseStrategy:
+    inline:
+      shardingColumn: user_id
+      algorithmExpression: ds_${user_id % 2}
+  #默认的分表规则
+  defaultTableStrategy:
+    inline:
+      shardingColumn: order_id
+      algorithmExpression: t_order_item_${order_id % 2}
+
+props:
+  sql.show: true

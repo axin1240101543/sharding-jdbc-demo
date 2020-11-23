@@ -1,0 +1,31 @@
+dataSources:
+  ds_0: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/sharding_sphere_1?serverTimezone=UTC
+    username: root
+    password: 1234
+  ds_1: com.alibaba.druid.pool.DruidDataSource
+    driverClassName: com.mysql.jdbc.Driver
+    jdbcUrl: jdbc:mysql://localhost:3306/sharding_sphere_1?serverTimezone=UTC
+    username: root
+    password: 1234
+
+shardingRule:
+  tables:
+    t_order:
+      actualDataNodes: ds_${0..1}.t_order
+    t_order_item:
+      actualDataNodes: ds_${0..1}.t_order_item
+  bindingTables:
+    - t_order,t_order_item
+  broadcastTables:
+    - t_address
+
+  defaultDatabaseStrategy:
+    hint:
+      algorithmClassName: com.mashibing.shardingsphere_demo.hint.MyHintAlgorithm
+  defaultTableStrategy:
+    none:
+
+props:
+  sql.show: true
